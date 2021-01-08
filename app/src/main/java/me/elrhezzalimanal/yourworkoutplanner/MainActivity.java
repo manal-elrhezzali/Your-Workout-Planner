@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private Button btnSeePlans, btnAllTrainings, btnAbout;
+
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -22,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         
         initViews();
         Utils.initTrainings();
-        //TODO: Create onClickListeners
 
         btnAllTrainings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, PlanActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: add an AlertDialog
             }
         });
     }

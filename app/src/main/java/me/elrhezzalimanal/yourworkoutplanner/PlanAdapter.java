@@ -1,12 +1,15 @@
 package me.elrhezzalimanal.yourworkoutplanner;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +22,13 @@ import java.util.ArrayList;
 import static me.elrhezzalimanal.yourworkoutplanner.TrainingActivity.TRAINING_KEY;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
+
+    public interface RemovePlan{
+        void onRemovePlanResult(Plan plan);
+    }
+
+    private RemovePlan removePlan;
+
     private ArrayList<Plan> plans = new ArrayList<>();
     private Context context;
     //this Adapter is used is the PlanActivity and in the EditActivity but this Adapter needs
@@ -64,7 +74,72 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             }
         });
         if (type.equals("edit")){
-            //TODO: set 2 onClickListeners
+            holder.emptyCircle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                            .setTitle("Finished")
+                            .setMessage("Have you finished " + plans.get(position).getTraining().getName() + "?" )
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    for (Plan p: Utils.getPlans()) {
+                                        if (p.equals(plans.get(position))){
+                                            p.setAccomplished(true);
+                                        }
+                                    }
+                                    notifyDataSetChanged();
+                                }
+                            });
+                    builder.create().show();
+
+                }
+            });
+
+            holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                            .setTitle("Remove")
+                            .setMessage("Are you sure you want to delete " + plans.get(position).getTraining().getName() + "" +
+                                    "from your plan?")
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            }).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        removePlan = (RemovePlan) context;
+                                        removePlan.onRemovePlanResult(plans.get(position));
+                                    }catch (ClassCastException e) {
+                                        e.printStackTrace();
+                                    }
+//                                  by using code to remove the plan the DataSet don't get notified
+//                                  that changes are made
+//                                  so I used a callback interface RemovePlan instead
+//                                    if(Utils.removePlan(plans.get(position))){
+//                                        Toast.makeText(context, "Plan Removed Successfully", Toast.LENGTH_SHORT).show();
+//                                        notifyDataSetChanged();
+//
+//                                    }
+                                }
+                            });
+
+                    builder.create().show();
+                    return true;
+                }
+            });
+
+
         }
     }
 

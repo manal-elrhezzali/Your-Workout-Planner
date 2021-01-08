@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class EditActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity implements PlanAdapter.RemovePlan {
 
     private static final String TAG = "EditActivity";
 
@@ -31,6 +32,7 @@ public class EditActivity extends AppCompatActivity {
         initViews();
 
         adapter = new PlanAdapter(this);
+        adapter.setType("edit");
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -57,7 +59,7 @@ public class EditActivity extends AppCompatActivity {
     private ArrayList<Plan> getPlansByDay(String day) {
         ArrayList<Plan> allPlans = Utils.getPlans();
         ArrayList<Plan> plans = new ArrayList<>();
-        for (Plan p: allPlans) {
+        for (Plan p : allPlans) {
             if (p.getDay().equalsIgnoreCase(day)) {
                 plans.add(p);
             }
@@ -66,10 +68,25 @@ public class EditActivity extends AppCompatActivity {
         return plans;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, PlanActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
     private void initViews() {
         Log.d(TAG, "initViews: called");
         txtDay = findViewById(R.id.txtDay);
         recyclerView = findViewById(R.id.recyclerView);
         btnAddPlan = findViewById(R.id.btnAddPlan);
+    }
+
+    @Override
+    public void onRemovePlanResult(Plan plan) {
+        if (Utils.removePlan(plan)) {
+            Toast.makeText(this, "Training Removed from your Plan Successfully", Toast.LENGTH_SHORT).show();
+            adapter.setPlans(getPlansByDay(plan.getDay()));
+        }
     }
 }
