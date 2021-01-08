@@ -1,6 +1,7 @@
 package me.elrhezzalimanal.yourworkoutplanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
+
+import static me.elrhezzalimanal.yourworkoutplanner.TrainingActivity.TRAINING_KEY;
 
 public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHolder> {
     private static final String TAG = "TrainingAdapter";
@@ -47,8 +50,9 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //TODO: Navigate the user to other activity
-                Toast.makeText(context, "Under construction", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, TrainingActivity.class);
+                intent.putExtra(TRAINING_KEY,trainings.get(position));
+                context.startActivity(intent);
             }
         });
     }

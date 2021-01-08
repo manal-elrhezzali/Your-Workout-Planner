@@ -1,6 +1,11 @@
 package me.elrhezzalimanal.yourworkoutplanner;
 
-public class Training {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+//We implemented the Parcelable interface so that we can pass a Training instance via an intent
+
+public class Training implements Parcelable {
 
     private int id;
     private String name;
@@ -15,6 +20,26 @@ public class Training {
         this.longDesc = longDesc;
         this.imageUrl = imageUrl;
     }
+
+    protected Training(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        shortDesc = in.readString();
+        longDesc = in.readString();
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<Training> CREATOR = new Creator<Training>() {
+        @Override
+        public Training createFromParcel(Parcel in) {
+            return new Training(in);
+        }
+
+        @Override
+        public Training[] newArray(int size) {
+            return new Training[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -65,5 +90,19 @@ public class Training {
                 ", longDesc='" + longDesc + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(shortDesc);
+        dest.writeString(longDesc);
+        dest.writeString(imageUrl);
     }
 }

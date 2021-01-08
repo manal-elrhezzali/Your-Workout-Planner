@@ -31,7 +31,7 @@ public class Utils {
         trainings.add(pectorals);
 
         Training pullUps = new Training(5, "Pull-ups", "An exercise involving raising oneself with one's arms by pulling up against a horizontal bar fixed above one's head.",
-                "A pull-up is an upper-body strength exercise. The pull-up is a closed-chain movement where the body is suspended by the hands and pulls up. As this happens, the elbows flex and the shoulders adduct and extend to bring the elbows to the torso.",
+                "A pull-up is an upper-body strength exercise. The pull-up is a closed-chain movement where the body is suspended by the hands and pulls up. As this happens, the elbows flex and the shoulders adduct and extend to bring the elbows to the torso." + "A pull-up is an upper-body strength exercise. The pull-up is a closed-chain movement where the body is suspended by the hands and pulls up. As this happens, the elbows flex and the shoulders adduct and extend to bring the elbows to the torso.",
                 "https://cathe.com/wp-content/uploads/2012/07/shutterstock_69079948.jpg");
         trainings.add(pullUps);
 
