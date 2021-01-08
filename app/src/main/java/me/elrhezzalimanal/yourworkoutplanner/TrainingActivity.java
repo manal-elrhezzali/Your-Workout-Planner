@@ -9,10 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-public class TrainingActivity extends AppCompatActivity {
+public class TrainingActivity extends AppCompatActivity implements PlanDetailDialog.PassPlanInterface {
 
     private static final String TAG = "TrainingActivity";
     public static final String TRAINING_KEY = "training";
@@ -42,7 +43,11 @@ public class TrainingActivity extends AppCompatActivity {
                 btnAddToPlan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO: show a dialog
+                        PlanDetailDialog dialog = new PlanDetailDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable(TRAINING_KEY, training);
+                        dialog.setArguments(bundle);
+                        dialog.show(getSupportFragmentManager(),"plan detail dialog");
                     }
                 });
             }
@@ -59,4 +64,15 @@ public class TrainingActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void getPlan(Plan plan) {
+        Log.d(TAG, "getPlan: " + plan.toString());
+        if (Utils.addPlan(plan)){
+            Toast.makeText(this, plan.getTraining().getName() +" Added to Your Plan", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, PlanActivity.class);
+            //clears the backStack so that the user won't be navigated to this activity once again when he presses the return button
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
 }
