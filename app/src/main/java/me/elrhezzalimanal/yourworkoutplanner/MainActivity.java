@@ -1,7 +1,9 @@
 package me.elrhezzalimanal.yourworkoutplanner;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,14 +16,14 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnSeePlans, btnAllTrainings, btnAbout;
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         initViews();
         Utils.initTrainings();
 
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnSeePlans.setOnClickListener(new View.OnClickListener(){
+        btnSeePlans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, PlanActivity.class);
@@ -44,13 +46,29 @@ public class MainActivity extends AppCompatActivity {
         btnAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: add an AlertDialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("About")
+                        .setMessage("Developed by Manal El-rhezzali, feel free to visit my personal blog : elrhezzali-manal.me ")
+                        .setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setPositiveButton("Visit", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainActivity.this, WebsiteActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                builder.create().show();
             }
         });
     }
 
     private void initViews() {
-        Log.d(TAG,"initViews: started ");
+        Log.d(TAG, "initViews: started ");
         btnSeePlans = findViewById(R.id.btnSeePlans);
         btnAllTrainings = findViewById(R.id.btnAllActivities);
         btnAbout = findViewById(R.id.btnAbout);

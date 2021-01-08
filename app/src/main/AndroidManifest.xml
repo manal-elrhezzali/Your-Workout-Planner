@@ -10,8 +10,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.YourWorkoutPlanner">
-        <activity android:name=".EditActivity"></activity>
+        android:theme="@style/Theme.YourWorkoutPlanner"
+        android:usesCleartextTraffic="true"> <!-- added this so that the WebView will be able to load sites that are HTTP, not only load an HTTPS sites -->
+        <activity android:name=".WebsiteActivity"></activity>
+        <activity android:name=".EditActivity" />
         <activity android:name=".PlanActivity" />
         <activity android:name=".TrainingActivity" />
         <activity android:name=".AllTrainingsActivity" />
